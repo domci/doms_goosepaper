@@ -2,6 +2,7 @@ import requests
 import feedparser
 from typing import List
 from readability import Document
+from newspaper import Article
 
 from .story import Story
 from .util import PlacementPreference
@@ -20,15 +21,18 @@ class RSSFeedStoryProvider(StoryProvider):
 
         for entry in feed.entries[:limit]:
             if "link" in entry.keys():
-                req = requests.get(entry["link"])
-                if not req.ok:
+                article = Article(entry["link"]) #, language='de')
+                article.download()
+                article.parse()
+                article.nlp()
+                if article.download_exception_msg:
                     print(f"Honk! Couldn't grab content for {self.feed_url}")
                     continue
 
-                doc = Document(req.content)
+                doc = Document(article.summary())
                 source = entry["link"].split(".")[1]
                 stories.append(
-                    Story(doc.title(), body_html=doc.summary(), byline=source)
+                    Story(article.title, body_html=doc.summary(), byline=source)
                 )
 
         return stories
