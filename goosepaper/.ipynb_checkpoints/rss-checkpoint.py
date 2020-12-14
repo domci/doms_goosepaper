@@ -29,7 +29,7 @@ class RSSFeedStoryProvider(StoryProvider):
                     print(f"Honk! Couldn't grab content for {self.feed_url}")
                     continue
 
-                doc = Document(article.summary
+                doc = Document(article.summary)
                 source = entry["link"].split(".")[1]
                 stories.append(
                     Story(article.title, body_html=doc.summary(), byline=source)
