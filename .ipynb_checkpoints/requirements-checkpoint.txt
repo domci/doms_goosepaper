@@ -21,7 +21,9 @@ ebooklib
 # for content parsing
 readability-lxml
 
+# for text summarization
 nltk
+newspaper3k
 
 # for sending to remarkable:
 git+https://github.com/j6k4m8/rmapy
